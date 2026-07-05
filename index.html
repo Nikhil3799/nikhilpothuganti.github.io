@@ -1,48 +1,66 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nikhil Pothuganti</title>
-<meta name="description" content="Professional portfolio of Nikhil Pothuganti, Software Engineer specializing in scalable pipelines, cloud data platforms, and workflow orchestration.">
+<meta name="description" content="Professional portfolio of Nikhil Pothuganti, Data Engineer specializing in scalable pipelines, cloud data platforms, and workflow orchestration.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #0B1220;
-    --surface: #121B2E;
-    --surface-2: #17233A;
-    --ink: #EAF1FB;
-    --ink-mid: #9FB0C6;
-    --ink-dim: #64768E;
-    --line: #223252;
-    --accent: #38BDF8;
-    --accent-2: #34D399;
-    --accent-3: #C084FC;
-    --accent-4: #FBBF24;
+    /* Control-room palette: warm graphite base, amber as the dominant signal,
+       teal + slate for supporting data, rose reserved for a single sharp accent. */
+    --bg: #14110D;
+    --surface: #1D1912;
+    --surface-2: #272016;
+    --ink: #F7F3EC;
+    --ink-mid: #B9AFA0;
+    --ink-dim: #7C7264;
+    --line: #3A3226;
+    --accent: #F5A524;      /* amber — primary signal */
+    --accent-2: #2DD4BF;    /* teal — data flow */
+    --accent-3: #7C9CBF;    /* slate blue — cloud */
+    --accent-4: #F2607D;    /* rose — sparing accent */
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
-  body{ background: var(--bg); color: var(--ink-mid); font-family: var(--font-body); line-height:1.6; }
+  body{ background: var(--bg); color: var(--ink-mid); font-family: var(--font-body); line-height:1.6; overflow-x:hidden; }
   a{ color: var(--accent); text-decoration:none; }
   h1,h2,h3{ font-family: var(--font-display); color: var(--ink); font-weight:600; }
-  .wrap{ max-width: 1080px; margin:0 auto; padding: 0 24px; }
-  section{ padding: 80px 0; border-top: 1px solid var(--line); }
+  .wrap{ max-width: 1080px; margin:0 auto; padding: 0 24px; position:relative; }
+  section{ padding: 80px 0; border-top: 1px solid var(--line); position:relative; }
   .eyebrow{ font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase; color: var(--accent); margin-bottom:12px; font-weight:600; }
   .section-sub{ color: var(--ink-dim); max-width:600px; margin-bottom:32px; }
 
+  /* ambient background glow, subtle, sits behind content */
+  .glow{ position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(600px circle at 12% 8%, rgba(245,165,36,0.07), transparent 60%),
+      radial-gradient(560px circle at 88% 30%, rgba(45,212,191,0.06), transparent 60%),
+      radial-gradient(620px circle at 50% 95%, rgba(124,156,191,0.06), transparent 60%);
+  }
+
+  /* SCROLL PROGRESS */
+  .scroll-progress{ position:fixed; top:0; left:0; height:3px; width:0%; z-index:100;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .1s linear; }
+
   /* NAV */
-  .navbar{ position:sticky; top:0; z-index:60; background: rgba(11,18,32,0.85); backdrop-filter: blur(10px); border-bottom:1px solid var(--line); }
+  .navbar{ position:sticky; top:0; z-index:60; background: rgba(20,17,13,0.85); backdrop-filter: blur(10px); border-bottom:1px solid var(--line); }
   .navbar-inner{ max-width:1080px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
   .brand{ display:flex; align-items:center; gap:10px; }
-  .brand .mark{ width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--accent),var(--accent-3)); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; color:#0B1220; font-size:0.85rem; }
+  .brand .mark{ width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--accent),var(--accent-4)); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; color:#14110D; font-size:0.85rem; }
   .brand .txt{ color:var(--ink); font-family:var(--font-display); font-weight:600; font-size:0.95rem; }
   .navlinks{ display:flex; gap:28px; }
-  .navlinks a{ color:var(--ink-mid); font-size:0.9rem; transition:color .15s ease; }
+  .navlinks a{ color:var(--ink-mid); font-size:0.9rem; transition:color .15s ease; position:relative; padding-bottom:2px; }
+  .navlinks a::after{ content:''; position:absolute; left:0; right:0; bottom:-4px; height:2px; background:var(--accent); transform:scaleX(0); transform-origin:left; transition:transform .2s ease; }
   .navlinks a:hover{ color:var(--ink); }
+  .navlinks a.active{ color:var(--ink); }
+  .navlinks a.active::after{ transform:scaleX(1); }
   .burger{ display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px; }
   .burger span{ width:22px; height:2px; background:var(--ink); display:block; }
   .mobile-menu{ display:none; flex-direction:column; gap:2px; padding: 8px 24px 16px; }
@@ -56,43 +74,53 @@
   /* HERO */
   .hero{ padding:100px 0 70px; text-align:center; }
   .hero h1{ font-size: clamp(2.1rem, 5vw, 3.2rem); margin-bottom:14px; }
-  .hero .role{ color: var(--accent); font-weight:600; margin-bottom:18px; }
+  .hero .role{ color: var(--accent); font-weight:600; margin-bottom:18px; height:1.4em; display:flex; align-items:center; justify-content:center; }
+  .hero .role span{ transition: opacity .35s ease, transform .35s ease; }
+  .hero .role span.swap{ opacity:0; transform:translateY(6px); }
   .hero p.tagline{ max-width:640px; margin:0 auto 34px; font-size:1.02rem; }
   .btn-row{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:44px; }
   .btn{ font-family:var(--font-body); font-weight:600; font-size:0.9rem; padding:12px 24px; border-radius:8px; transition:all .15s ease; display:inline-block; }
-  .btn.primary{ background: var(--accent); color:#0B1220; }
-  .btn.primary:hover{ opacity:0.9; }
+  .btn.primary{ background: var(--accent); color:#14110D; }
+  .btn.primary:hover{ opacity:0.9; transform:translateY(-2px); }
   .btn.ghost{ border:1px solid var(--line); color: var(--ink); }
-  .btn.ghost:hover{ border-color: var(--accent); color: var(--accent); }
+  .btn.ghost:hover{ border-color: var(--accent); color: var(--accent); transform:translateY(-2px); }
 
   .chip-row{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
-  .chip{ font-size:0.82rem; font-weight:500; padding:8px 16px; border-radius:20px; background: var(--surface); border:1px solid var(--line); }
-  .chip.c1{ color: var(--accent); border-color: rgba(56,189,248,0.35); }
-  .chip.c2{ color: var(--accent-2); border-color: rgba(52,211,153,0.35); }
-  .chip.c3{ color: var(--accent-3); border-color: rgba(192,132,252,0.35); }
-  .chip.c4{ color: var(--accent-4); border-color: rgba(251,191,36,0.35); }
+  .chip{ font-size:0.82rem; font-weight:500; padding:8px 16px; border-radius:20px; background: var(--surface); border:1px solid var(--line); transition:transform .15s ease, border-color .15s ease; }
+  .chip:hover{ transform:translateY(-2px); }
+  .chip.c1{ color: var(--accent); border-color: rgba(245,165,36,0.35); }
+  .chip.c2{ color: var(--accent-2); border-color: rgba(45,212,191,0.35); }
+  .chip.c3{ color: var(--accent-3); border-color: rgba(124,156,191,0.35); }
+  .chip.c4{ color: var(--accent-4); border-color: rgba(242,96,125,0.35); }
+
+  /* reveal-on-scroll */
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in-view{ opacity:1; transform:none; }
 
   /* VALUE PROP */
   .value-grid{ display:grid; grid-template-columns: repeat(2,1fr); gap:20px; }
   @media (max-width:760px){ .value-grid{ grid-template-columns:1fr; } }
-  .value-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:24px; }
+  .value-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:24px; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+  .value-card:hover{ transform:translateY(-4px); border-color:var(--accent); box-shadow:0 14px 28px rgba(0,0,0,0.35); }
   .value-card strong{ color:var(--ink); display:block; margin-bottom:6px; font-family:var(--font-display); }
 
   /* SKILLS with filters */
   .filter-row{ display:flex; flex-wrap:wrap; gap:9px; margin-bottom:28px; }
   .filter-chip{ font-size:0.8rem; padding:7px 15px; border-radius:20px; background:var(--surface); border:1px solid var(--line); color:var(--ink-mid); cursor:pointer; transition: all .15s ease; }
   .filter-chip:hover{ border-color: var(--accent); color: var(--ink); }
-  .filter-chip.active{ background: var(--accent); border-color: var(--accent); color:#0B1220; font-weight:600; }
+  .filter-chip.active{ background: var(--accent); border-color: var(--accent); color:#14110D; font-weight:600; }
   .skill-grid{ display:grid; grid-template-columns: repeat(2,1fr); gap:16px; }
   @media (max-width:760px){ .skill-grid{ grid-template-columns:1fr; } }
-  .skill-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; transition: opacity .2s ease; }
+  .skill-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; transition: opacity .2s ease, transform .2s ease, border-color .2s ease; }
+  .skill-card:hover{ transform:translateY(-3px); border-color:var(--accent-2); }
   .skill-card.is-hidden{ display:none; }
   .skill-card h3{ font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--accent); margin-bottom:12px; }
   .tags{ display:flex; flex-wrap:wrap; gap:8px; }
   .tags span{ font-size:0.78rem; color:var(--ink); background:var(--surface-2); border:1px solid var(--line); padding:5px 10px; border-radius:6px; }
 
   /* EXPERIENCE CARDS */
-  .exp-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:28px; margin-bottom:20px; }
+  .exp-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:28px; margin-bottom:20px; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+  .exp-card:hover{ transform:translateY(-3px); border-color:var(--accent-3); box-shadow:0 14px 28px rgba(0,0,0,0.3); }
   .exp-card:last-child{ margin-bottom:0; }
   .exp-card .role{ color:var(--ink); font-size:1.1rem; font-family:var(--font-display); }
   .exp-card .org{ color:var(--accent); font-size:0.88rem; margin:4px 0 2px; }
@@ -106,40 +134,62 @@
   /* EDUCATION */
   .grid-2{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
   @media (max-width:760px){ .grid-2{ grid-template-columns:1fr; } }
-  .card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:22px; }
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:22px; transition: transform .2s ease, border-color .2s ease; }
+  .card:hover{ transform:translateY(-3px); border-color:var(--accent); }
   .card .tag{ font-size:0.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:8px; display:block; }
   .card h4{ color:var(--ink); font-family:var(--font-display); font-size:1rem; margin-bottom:4px; }
   .card p{ font-size:0.85rem; color:var(--ink-dim); }
 
-  /* ARTIFACTS / TIMELINE */
-  .edit-flag{ background: rgba(56,189,248,0.08); border:1px dashed rgba(56,189,248,0.3); border-radius:10px; padding:14px 16px; margin-bottom:30px; font-size:0.85rem; }
-  .edit-flag strong{ color:var(--accent); text-transform:uppercase; font-size:0.72rem; letter-spacing:0.05em; }
-  .timeline{ position:relative; padding-left:28px; }
-  .timeline::before{ content:''; position:absolute; left:5px; top:6px; bottom:6px; width:2px; background:var(--line); }
-  .t-item{ position:relative; margin-bottom:30px; }
-  .t-item:last-child{ margin-bottom:0; }
-  .t-item::before{ content:''; position:absolute; left:-28px; top:4px; width:11px; height:11px; border-radius:3px; transform:rotate(45deg); background:var(--bg); border:2px solid var(--accent); }
-  .t-item .year{ font-size:0.75rem; color:var(--accent); font-weight:600; }
-  .t-item h4{ font-size:1rem; margin:4px 0 6px; }
-  .t-item p{ font-size:0.92rem; }
+  /* ARTIFACTS */
+  .artifact-card{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:28px; transition: border-color .2s ease; }
+  .artifact-head{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:18px; }
+  .artifact-head h3{ font-size:1.3rem; }
+  .artifact-badge{ font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); background:rgba(245,165,36,0.1); border:1px solid rgba(245,165,36,0.35); padding:6px 12px; border-radius:20px; white-space:nowrap; }
+  .artifact-media{ position:relative; margin-bottom:24px; border-radius:12px; overflow:hidden; border:1px solid var(--line); }
+  .artifact-media img{ width:100%; display:block; cursor:zoom-in; transition:transform .3s ease; }
+  .artifact-media:hover img{ transform:scale(1.015); }
+  .artifact-media .zoom-hint{ position:absolute; right:14px; bottom:14px; font-size:0.72rem; background:rgba(20,17,13,0.75); color:var(--ink); padding:6px 12px; border-radius:20px; border:1px solid var(--line); pointer-events:none; }
+  .artifact-meta{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  @media (max-width:760px){ .artifact-meta{ grid-template-columns:1fr; } }
+  .artifact-meta .full{ grid-column:1 / -1; }
+  .artifact-meta div{ background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:16px 18px; }
+  .artifact-meta h5{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.07em; color:var(--accent-2); margin-bottom:8px; }
+  .artifact-meta p{ font-size:0.9rem; color:var(--ink-mid); }
+  .artifact-meta .stack{ margin-top:10px; display:flex; flex-wrap:wrap; gap:8px; }
+  .artifact-meta .stack span{ font-size:0.75rem; color:var(--ink); background:var(--bg); border:1px solid var(--line); padding:4px 9px; border-radius:6px; }
+
+  /* lightbox */
+  .lightbox{ position:fixed; inset:0; background:rgba(10,8,6,0.9); display:flex; align-items:center; justify-content:center; padding:40px; z-index:200; opacity:0; pointer-events:none; transition:opacity .2s ease; }
+  .lightbox.open{ opacity:1; pointer-events:auto; }
+  .lightbox img{ max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 20px 60px rgba(0,0,0,0.5); }
+  .lightbox-close{ position:absolute; top:24px; right:32px; color:var(--ink); font-size:1rem; background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:8px 16px; cursor:pointer; }
+
+  /* BACK TO TOP */
+  .to-top{ position:fixed; bottom:24px; right:24px; width:44px; height:44px; border-radius:50%; background:var(--surface); border:1px solid var(--line); color:var(--ink); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease, border-color .2s ease; cursor:pointer; z-index:80; }
+  .to-top.visible{ opacity:1; pointer-events:auto; }
+  .to-top:hover{ border-color:var(--accent); transform:translateY(-2px); }
 
   /* CONTACT — placeholders only, no real data */
   footer{ padding:70px 0 50px; text-align:center; }
   footer p{ max-width:480px; margin:0 auto 30px; }
   .contact-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-  .contact-pill{ display:inline-flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--ink-dim); background:var(--surface); border:1px dashed var(--line); padding:10px 18px; border-radius:20px; cursor:default; }
+  .contact-pill{ display:inline-flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--ink-dim); background:var(--surface); border:1px dashed var(--line); padding:10px 18px; border-radius:20px; cursor:default; transition:border-color .15s ease; }
+  .contact-pill:hover{ border-color:var(--accent); }
   .contact-pill .ico{ opacity:0.8; }
   .foot-note{ margin-top:40px; font-size:0.75rem; color:var(--ink-dim); }
-  ::selection{ background: rgba(56,189,248,0.25); color:var(--ink); }
+  ::selection{ background: rgba(245,165,36,0.25); color:var(--ink); }
   :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
 </style>
 </head>
 <body>
 
+<div class="glow"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
+
 <nav class="navbar">
   <div class="navbar-inner">
     <div class="brand"><span class="mark">NP</span><span class="txt">Nikhil Pothuganti</span></div>
-    <div class="navlinks">
+    <div class="navlinks" id="navlinks">
       <a href="#home">Home</a>
       <a href="#experience">Experience</a>
       <a href="#skills">Skills</a>
@@ -162,7 +212,7 @@
 <header class="hero" id="home">
   <div class="wrap">
     <h1>Nikhil Pothuganti</h1>
-    <p class="role">Data Engineer</p>
+    <p class="role"><span id="roleText">Data Engineer</span></p>
     <p class="tagline">I design and operate the data infrastructure that lets teams trust their numbers — from ingestion and transformation to the dashboards stakeholders check every morning.</p>
     <div class="btn-row">
       <a class="btn primary" href="#experience">View Experience</a>
@@ -182,24 +232,24 @@
 
 <section id="value">
   <div class="wrap">
-    <div class="eyebrow">Personal Value Proposition</div>
-    <h2>What I bring to a data team</h2>
-    <p class="section-sub">Four things I consistently deliver, backed by the work below.</p>
+    <div class="eyebrow reveal">Personal Value Proposition</div>
+    <h2 class="reveal">What I bring to a data team</h2>
+    <p class="section-sub reveal">Four things I consistently deliver, backed by the work below.</p>
     <div class="value-grid">
-      <div class="value-card"><strong>Fast, reliable pipelines</strong>Rebuilding execution logic and adding validation checks has cut weekly processing time by 15 hours and improved cloud-based performance by 20% in my current role.</div>
-      <div class="value-card"><strong>Automation over manual work</strong>From VBA dashboards to Airflow-orchestrated ETL, I've repeatedly replaced hours of manual work with pipelines that run themselves — cutting a team's reporting effort by 75%.</div>
-      <div class="value-card"><strong>Fluent across the cloud stack</strong>AWS, GCP, and Azure aren't abstractions — I've shipped production work in Redshift, BigQuery, Synapse, and Glue, and hold certifications in both AWS and GCP.</div>
-      <div class="value-card"><strong>People, not just pipelines</strong>Mentoring interns, documenting stored procedures, and building for non-technical stakeholders are as much a part of my job as the SQL itself.</div>
+      <div class="value-card reveal"><strong>Fast, reliable pipelines</strong>Rebuilding execution logic and adding validation checks has cut weekly processing time by 15 hours and improved cloud-based performance by 20% in my current role.</div>
+      <div class="value-card reveal"><strong>Automation over manual work</strong>From VBA dashboards to Airflow-orchestrated ETL, I've repeatedly replaced hours of manual work with pipelines that run themselves — cutting a team's reporting effort by 75%.</div>
+      <div class="value-card reveal"><strong>Fluent across the cloud stack</strong>AWS, GCP, and Azure aren't abstractions — I've shipped production work in Redshift, BigQuery, Synapse, and Glue, and hold certifications in both AWS and GCP.</div>
+      <div class="value-card reveal"><strong>People, not just pipelines</strong>Mentoring interns, documenting stored procedures, and building for non-technical stakeholders are as much a part of my job as the SQL itself.</div>
     </div>
   </div>
 </section>
 
 <section id="skills">
   <div class="wrap">
-    <div class="eyebrow">Skills</div>
-    <h2>Technical toolkit</h2>
-    <p class="section-sub">Grouped the way I actually use them. Filter by category.</p>
-    <div class="filter-row" id="filterRow">
+    <div class="eyebrow reveal">Skills</div>
+    <h2 class="reveal">Technical toolkit</h2>
+    <p class="section-sub reveal">Grouped the way I actually use them. Filter by category.</p>
+    <div class="filter-row reveal" id="filterRow">
       <span class="filter-chip active" data-filter="all">All</span>
       <span class="filter-chip" data-filter="lang">Languages &amp; Data</span>
       <span class="filter-chip" data-filter="bigdata">Big Data &amp; Streaming</span>
@@ -209,23 +259,23 @@
       <span class="filter-chip" data-filter="ml">AI/ML</span>
     </div>
     <div class="skill-grid" id="skillGrid">
-      <div class="skill-card" data-cat="lang"><h3>Languages &amp; Data</h3><div class="tags"><span>Python</span><span>SQL</span><span>PL/SQL</span><span>PySpark</span><span>NoSQL</span><span>Data Modeling</span><span>Data Warehousing</span></div></div>
-      <div class="skill-card" data-cat="bigdata"><h3>Big Data &amp; Streaming</h3><div class="tags"><span>Apache Spark</span><span>Hadoop</span><span>Kafka</span><span>Apache Airflow</span><span>Real-Time Analytics</span></div></div>
-      <div class="skill-card" data-cat="cloud"><h3>Cloud Platforms</h3><div class="tags"><span>AWS S3 / Redshift / Glue / Lambda / EMR</span><span>GCP BigQuery / Dataflow</span><span>Azure Fabric / Synapse / Data Factory</span></div></div>
-      <div class="skill-card" data-cat="devops"><h3>Orchestration &amp; DevOps</h3><div class="tags"><span>Docker</span><span>Kubernetes</span><span>Terraform</span><span>Git</span><span>Jenkins</span><span>CI/CD</span></div></div>
-      <div class="skill-card" data-cat="viz"><h3>Visualization</h3><div class="tags"><span>Power BI</span><span>Tableau</span><span>Looker</span></div></div>
-      <div class="skill-card" data-cat="ml"><h3>AI/ML &amp; Predictive Analytics</h3><div class="tags"><span>ML Pipelines</span><span>Regression Analysis</span><span>Anomaly Detection</span><span>Time Series Forecasting</span></div></div>
+      <div class="skill-card reveal" data-cat="lang"><h3>Languages &amp; Data</h3><div class="tags"><span>Python</span><span>SQL</span><span>PL/SQL</span><span>PySpark</span><span>NoSQL</span><span>Data Modeling</span><span>Data Warehousing</span></div></div>
+      <div class="skill-card reveal" data-cat="bigdata"><h3>Big Data &amp; Streaming</h3><div class="tags"><span>Apache Spark</span><span>Hadoop</span><span>Kafka</span><span>Apache Airflow</span><span>Real-Time Analytics</span></div></div>
+      <div class="skill-card reveal" data-cat="cloud"><h3>Cloud Platforms</h3><div class="tags"><span>AWS S3 / Redshift / Glue / Lambda / EMR</span><span>GCP BigQuery / Dataflow</span><span>Azure Fabric / Synapse / Data Factory</span></div></div>
+      <div class="skill-card reveal" data-cat="devops"><h3>Orchestration &amp; DevOps</h3><div class="tags"><span>Docker</span><span>Kubernetes</span><span>Terraform</span><span>Git</span><span>Jenkins</span><span>CI/CD</span></div></div>
+      <div class="skill-card reveal" data-cat="viz"><h3>Visualization</h3><div class="tags"><span>Power BI</span><span>Tableau</span><span>Looker</span></div></div>
+      <div class="skill-card reveal" data-cat="ml"><h3>AI/ML &amp; Predictive Analytics</h3><div class="tags"><span>ML Pipelines</span><span>Regression Analysis</span><span>Anomaly Detection</span><span>Time Series Forecasting</span></div></div>
     </div>
   </div>
 </section>
 
 <section id="experience">
   <div class="wrap">
-    <div class="eyebrow">Experience</div>
-    <h2>Professional experience</h2>
-    <p class="section-sub">Career progression across data engineering roles.</p>
+    <div class="eyebrow reveal">Experience</div>
+    <h2 class="reveal">Professional experience</h2>
+    <p class="section-sub reveal">Career progression across data engineering roles.</p>
 
-    <div class="exp-card">
+    <div class="exp-card reveal">
       <div class="role">Software Engineer, Data Infrastructure</div>
       <div class="org">Linkwell Solutions Inc, TX</div>
       <div class="dates">Jan 2023 — Present</div>
@@ -241,7 +291,7 @@
       <div class="stack"><span>Python</span><span>PySpark</span><span>Airflow</span><span>Kubernetes</span><span>AWS</span><span>PostgreSQL</span></div>
     </div>
 
-    <div class="exp-card">
+    <div class="exp-card reveal">
       <div class="role">Data Engineer Intern</div>
       <div class="org">Linkwell Solutions Inc, TX</div>
       <div class="dates">May 2022 — Dec 2022</div>
@@ -253,7 +303,7 @@
       <div class="stack"><span>Python</span><span>SQL</span><span>Kafka</span><span>Tableau</span></div>
     </div>
 
-    <div class="exp-card">
+    <div class="exp-card reveal">
       <div class="role">Data Analyst</div>
       <div class="org">KS Info Solutions, India</div>
       <div class="dates">May 2020 — Jun 2021</div>
@@ -269,27 +319,67 @@
 
 <section id="education">
   <div class="wrap">
-    <div class="eyebrow">Education &amp; Certifications</div>
-    <h2>Foundation</h2>
+    <div class="eyebrow reveal">Education &amp; Certifications</div>
+    <h2 class="reveal">Foundation</h2>
     <div class="grid-2">
-      <div class="card"><span class="tag">Education</span><h4>M.S. Computer Science</h4><p>Saint Louis University · Aug 2021 – May 2023</p></div>
-      <div class="card"><span class="tag">Education</span><h4>B.S. Computer Science</h4><p>Kakatiya Institute of Technology and Science · Jul 2017 – May 2021</p></div>
-      <div class="card"><span class="tag">Certification</span><h4>AWS Solutions Architect Associate</h4><p>Credential CHYRWHPC4N11QMC1</p></div>
-      <div class="card"><span class="tag">Certification</span><h4>Google Cloud Certified Associate Cloud Engineer</h4><p>Credential 116439</p></div>
+      <div class="card reveal"><span class="tag">Education</span><h4>M.S. Computer Science</h4><p>Saint Louis University · Aug 2021 – May 2023</p></div>
+      <div class="card reveal"><span class="tag">Education</span><h4>B.S. Computer Science</h4><p>Kakatiya Institute of Technology and Science · Jul 2017 – May 2021</p></div>
+      <div class="card reveal"><span class="tag">Certification</span><h4>AWS Solutions Architect Associate</h4><p>Credential CHYRWHPC4N11QMC1</p></div>
+      <div class="card reveal"><span class="tag">Certification</span><h4>Google Cloud Certified Associate Cloud Engineer</h4><p>Credential 116439</p></div>
     </div>
   </div>
 </section>
 
 <section id="artifacts">
-  
+  <div class="wrap">
+    <div class="eyebrow reveal">Course Artifacts</div>
+    <h2 class="reveal">Selected work</h2>
+    <p class="section-sub reveal">Deliverables from Machine Learning Fundamentals (AIML-500), presented with objective, process, tools, and value proposition for each.</p>
+
+    <div class="artifact-card reveal">
+      <div class="artifact-head">
+        <h3>The Evolution of Artificial Intelligence — Timeline Infographic</h3>
+        <span class="artifact-badge">Discussion 1.3</span>
+      </div>
+
+      <div class="artifact-media">
+        <img src="ai_history_landscape.png" alt="Infographic timeline of AI history from 1950 to 2024, showing four eras: Foundations, the AI Winters, the Learning Renaissance, and Deep Learning &amp; Generative AI." id="artifactImg">
+        <span class="zoom-hint">Click to enlarge</span>
+      </div>
+
+      <div class="artifact-meta">
+        <div>
+          <h5>Objective</h5>
+          <p>Built for Discussion 1.3 in Machine Learning Fundamentals: to research and visually summarize the major milestones in AI history, from Turing's 1950 question through the generative AI boom, in a single reference graphic.</p>
+        </div>
+        <div>
+          <h5>Process</h5>
+          <p>Researched and organized AI milestones into four chronological eras, then designed a custom dark-mode infographic in HTML/CSS — color-coding each era, adding stat callouts for key data points, and rendering the final layout to a high-resolution image for portfolio use.</p>
+        </div>
+        <div>
+          <h5>Tools</h5>
+          <p>Claude (Anthropic) for research synthesis and layout design, HTML/CSS for the infographic itself, and a headless browser for high-resolution image rendering.</p>
+          <div class="stack"><span>Claude</span><span>HTML/CSS</span><span>Playwright</span></div>
+        </div>
+        <div>
+          <h5>Value Proposition</h5>
+          <p>Shows the ability to turn a large, unstructured body of research into a clear, well-organized visual — the same skill used to turn raw data into dashboards and reports that stakeholders can actually read at a glance.</p>
+        </div>
+        <div class="full">
+          <h5>Sources</h5>
+          <p>Putchuon — "Put You On." (2024), The Entire History of Artificial Intelligence (Last 100 Years) [Video], YouTube · IEEE Computer Society, The Evolution of AI: From Foundations to Future Prospects, computer.org · Bender, E. &amp; Our World in Data, A Brief History of Artificial Intelligence, ourworldindata.org.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <footer id="contact">
   <div class="wrap">
-    <div class="eyebrow" style="justify-content:center; display:flex;">Contact</div>
-    <h2>Let's talk data infrastructure</h2>
-    <p>Open to conversations about Software engineering roles, pipeline architecture, or collaboration on AI/ML-adjacent projects.</p>
-    <div class="contact-row">
+    <div class="eyebrow reveal" style="justify-content:center; display:flex;">Contact</div>
+    <h2 class="reveal">Let's talk data infrastructure</h2>
+    <p class="reveal">Open to conversations about software engineering roles, pipeline architecture, or collaboration on AI/ML-adjacent projects.</p>
+    <div class="contact-row reveal">
       <span class="contact-pill"><span class="ico">✉</span> Email</span>
       <span class="contact-pill"><span class="ico">☎</span> Phone</span>
       <span class="contact-pill"><span class="ico">💼</span> LinkedIn</span>
@@ -297,12 +387,21 @@
   </div>
 </footer>
 
+<div class="to-top" id="toTop" title="Back to top">↑</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">Close ✕</button>
+  <img src="ai_history_landscape.png" alt="Enlarged AI history timeline infographic" id="lightboxImg">
+</div>
+
 <script>
+  // mobile nav
   const burgerBtn = document.getElementById('burgerBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   burgerBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
   mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
 
+  // skill filters
   const chips = document.querySelectorAll('#filterRow .filter-chip');
   const cards = document.querySelectorAll('#skillGrid .skill-card');
   chips.forEach(chip => {
@@ -313,6 +412,70 @@
       cards.forEach(card => card.classList.toggle('is-hidden', !(f === 'all' || card.dataset.cat === f)));
     });
   });
+
+  // scroll progress bar
+  const progressBar = document.getElementById('scrollProgress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressBar.style.width = scrolled + '%';
+  });
+
+  // back to top
+  const toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', () => {
+    toTop.classList.toggle('visible', window.scrollY > 500);
+  });
+  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // active nav link tracking
+  const sections = document.querySelectorAll('section[id], header[id]');
+  const navLinks = document.querySelectorAll('#navlinks a');
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = document.querySelector(`#navlinks a[href="#${entry.target.id}"]`);
+      if (!link) return;
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(sec => navObserver.observe(sec));
+
+  // rotating role text in hero
+  const roles = ['Data Engineer', 'Pipeline Architect', 'Cloud Data Builder'];
+  let roleIdx = 0;
+  const roleText = document.getElementById('roleText');
+  setInterval(() => {
+    roleText.classList.add('swap');
+    setTimeout(() => {
+      roleIdx = (roleIdx + 1) % roles.length;
+      roleText.textContent = roles[roleIdx];
+      roleText.classList.remove('swap');
+    }, 350);
+  }, 2800);
+
+  // artifact lightbox
+  const artifactImg = document.getElementById('artifactImg');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxClose = document.getElementById('lightboxClose');
+  artifactImg.addEventListener('click', () => lightbox.classList.add('open'));
+  lightboxClose.addEventListener('click', () => lightbox.classList.remove('open'));
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
 </script>
 
 </body>
