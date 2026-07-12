@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -141,7 +142,9 @@
   .card p{ font-size:0.85rem; color:var(--ink-dim); }
 
   /* ARTIFACTS */
-  .artifact-card{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:28px; transition: border-color .2s ease; }
+  .artifact-card{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:28px; margin-bottom:24px; transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease; }
+  .artifact-card:last-child{ margin-bottom:0; }
+  .artifact-card:hover{ transform:translateY(-3px); border-color:var(--accent-3); box-shadow:0 14px 28px rgba(0,0,0,0.3); }
   .artifact-head{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:18px; }
   .artifact-head h3{ font-size:1.3rem; }
   .artifact-badge{ font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); background:rgba(245,165,36,0.1); border:1px solid rgba(245,165,36,0.35); padding:6px 12px; border-radius:20px; white-space:nowrap; }
@@ -343,7 +346,7 @@
       </div>
 
       <div class="artifact-media">
-        <img src="ai_history_landscape.png" alt="Infographic timeline of AI history from 1950 to 2024, showing four eras: Foundations, the AI Winters, the Learning Renaissance, and Deep Learning &amp; Generative AI." id="artifactImg">
+        <img src="ai_history_landscape.png" alt="Infographic timeline of AI history from 1950 to 2024, showing four eras: Foundations, the AI Winters, the Learning Renaissance, and Deep Learning &amp; Generative AI." class="artifact-image">
         <span class="zoom-hint">Click to enlarge</span>
       </div>
 
@@ -371,6 +374,68 @@
         </div>
       </div>
     </div>
+
+
+    <div class="artifact-card reveal">
+      <div class="artifact-head">
+        <h3>Machine Learning vs. Deep Learning — Comparative Case Study</h3>
+        <span class="artifact-badge">Artifact 2</span>
+      </div>
+
+      <div class="artifact-media">
+        <img
+          src="ml-vs-dl-comparative-case-study.png"
+          alt="Infographic comparing machine learning and deep learning through telecom customer churn prediction with a support vector machine and airport facial recognition with a convolutional neural network."
+          class="artifact-image"
+        >
+        <span class="zoom-hint">Click to enlarge</span>
+      </div>
+
+      <div class="artifact-meta">
+        <div>
+          <h5>Objective</h5>
+          <p>Created for Machine Learning Fundamentals to compare traditional machine learning and deep learning through two practical case studies and explain how data type, feature engineering, model complexity, and business needs influence model selection.</p>
+        </div>
+
+        <div>
+          <h5>Process</h5>
+          <p>Researched a support vector machine used for telecom customer churn prediction and a convolutional neural network used for airport facial recognition. I compared the structure of each dataset, how features are learned, model suitability, performance, interpretability, and implementation tradeoffs. I then revised the academic paper into a concise, portfolio-ready infographic.</p>
+        </div>
+
+        <div>
+          <h5>Tools</h5>
+          <p>Microsoft Word for the original APA-formatted case study, academic journal sources for evidence, and generative AI support for organizing, editing, and converting the analysis into a professional visual summary.</p>
+          <div class="stack">
+            <span>Microsoft Word</span>
+            <span>Academic Research</span>
+            <span>Support Vector Machines</span>
+            <span>Convolutional Neural Networks</span>
+            <span>Generative AI</span>
+          </div>
+        </div>
+
+        <div>
+          <h5>Value Proposition</h5>
+          <p>Demonstrates my ability to select an appropriate AI approach based on the nature of the data and the business problem. It also shows that I can translate technical research into a clear visual that technical and non-technical stakeholders can understand quickly.</p>
+        </div>
+
+        <div class="full">
+          <h5>Key Learning</h5>
+          <p>Traditional machine learning is often the better choice for smaller, structured datasets with clearly defined features, while deep learning is more effective for high-dimensional, unstructured data such as images. The strongest solution is not always the most complex model; it is the model that best fits the data, operational constraints, and intended outcome.</p>
+        </div>
+
+        <div class="full">
+          <h5>Evidence and Results</h5>
+          <p>The telecom case study highlights an SVM model that achieved nearly 99% accuracy and F1-score after feature selection and class-imbalance treatment. The facial-recognition case study highlights a CNN-based approach that achieved 91% accuracy and 91% precision while supporting faster airport security screening.</p>
+        </div>
+
+        <div class="full">
+          <h5>Sources</h5>
+          <p>Nguyen, N. Y., Tran, V. L., &amp; Dao, V. T. S. (2022). Churn prediction in the telecommunications industry using kernel support vector machines. <em>PLOS ONE, 17</em>(5), e0267935. Anggraini, E. I., et al. (2025). Development of a face image recognition algorithm using CNN in airport security checkpoints for terrorist early detection. <em>Jurnal Ilmiah SINERGI, 29</em>(1), 33–42.</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -391,7 +456,7 @@
 
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose">Close ✕</button>
-  <img src="ai_history_landscape.png" alt="Enlarged AI history timeline infographic" id="lightboxImg">
+  <img src="ai_history_landscape.png" alt="Enlarged course artifact" id="lightboxImg">
 </div>
 
 <script>
@@ -469,13 +534,32 @@
   }, 2800);
 
   // artifact lightbox
-  const artifactImg = document.getElementById('artifactImg');
+  const artifactImages = document.querySelectorAll('.artifact-image');
   const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
   const lightboxClose = document.getElementById('lightboxClose');
-  artifactImg.addEventListener('click', () => lightbox.classList.add('open'));
-  lightboxClose.addEventListener('click', () => lightbox.classList.remove('open'));
-  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('open'); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+
+  artifactImages.forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  const closeLightbox = () => {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
 </script>
 
 </body>
